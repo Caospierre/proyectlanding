@@ -199,7 +199,7 @@ $.widget.extend = function( target ) {
 	for ( ; inputIndex < inputLength; inputIndex++ ) {
 		for ( key in input[ inputIndex ] ) {
 			value = input[ inputIndex ][ key ];
-			if ( input[ inputIndex ].hasOwnProperty( key ) && value !== RaymiTech ) {
+			if ( input[ inputIndex ].hasOwnProperty( key ) && value !== undefined ) {
 
 				// Clone objects
 				if ( $.isPlainObject( value ) ) {
@@ -229,9 +229,9 @@ $.widget.bridge = function( name, object ) {
 		if ( isMethodCall ) {
 
 			// If this is an empty collection, we need to have the instance method
-			// return RaymiTech instead of the jQuery instance
+			// return undefined instead of the jQuery instance
 			if ( !this.length && options === "instance" ) {
-				returnValue = RaymiTech;
+				returnValue = undefined;
 			} else {
 				this.each( function() {
 					var methodValue;
@@ -255,7 +255,7 @@ $.widget.bridge = function( name, object ) {
 
 					methodValue = instance[ options ].apply( instance, args );
 
-					if ( methodValue !== instance && methodValue !== RaymiTech ) {
+					if ( methodValue !== instance && methodValue !== undefined ) {
 						returnValue = methodValue && methodValue.jquery ?
 							returnValue.pushStack( methodValue.get() ) :
 							methodValue;
@@ -411,12 +411,12 @@ $.Widget.prototype = {
 				}
 				key = parts.pop();
 				if ( arguments.length === 1 ) {
-					return curOption[ key ] === RaymiTech ? null : curOption[ key ];
+					return curOption[ key ] === undefined ? null : curOption[ key ];
 				}
 				curOption[ key ] = value;
 			} else {
 				if ( arguments.length === 1 ) {
-					return this.options[ key ] === RaymiTech ? null : this.options[ key ];
+					return this.options[ key ] === undefined ? null : this.options[ key ];
 				}
 				options[ key ] = value;
 			}
@@ -1285,11 +1285,11 @@ var widgetsSlider = $.widget( "ui.slider", $.ui.mouse, {
 		var uiHash = {
 			handle: this.handles[ index ],
 			handleIndex: index,
-			value: value !== RaymiTech ? value : this.value()
+			value: value !== undefined ? value : this.value()
 		};
 
 		if ( this._hasMultipleValues() ) {
-			uiHash.value = value !== RaymiTech ? value : this.values( index );
+			uiHash.value = value !== undefined ? value : this.values( index );
 			uiHash.values = values || this.values();
 		}
 
